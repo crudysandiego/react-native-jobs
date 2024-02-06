@@ -11,6 +11,13 @@ const Popularjobs = () => {
   const router = useRouter();
   const { data, isLoading, error } = useFetch('search', { query: 'React developer', num_pages: 1 });
 
+  const [selectedJob, setSelectedJob] = useState();
+
+  const handleCardPress = (item) => {
+    router.push(`/job-details/${item.job_id}`);
+    setSelectedJob(item.job_id);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -29,7 +36,12 @@ const Popularjobs = () => {
           <FlatList 
             data={ data }
             renderItem={({ item }) => (
-              <PopularJobCard item={item}></PopularJobCard>
+              <PopularJobCard 
+                item={item}
+                selectedJob={selectedJob}
+                handleCardPress={handleCardPress}
+              >
+              </PopularJobCard>
             )}
             keyExtractor={item => item?.job_id}
             contentContainerStyle={{ columnGap: SIZES.medium }}
